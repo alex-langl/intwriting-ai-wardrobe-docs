@@ -1,0 +1,1 @@
+Anytime you're asked to do something related to mintlify or have to work with it, you must check the @mintlify_docs.md and follow all the necessary links to fetch the up-to-date docs.

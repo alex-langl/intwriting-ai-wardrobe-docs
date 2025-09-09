@@ -1,44 +1,102 @@
-# Mintlify Starter Kit
+# AI Wardrobe
 
-Use the starter kit to get your docs deployed and ready to customize.
+AI Wardrobe is a powerful and easy-to-use service that allows you to virtually try on different outfits on a person's image. This project leverages the capabilities of Generative AI to produce high-quality, realistic images of people wearing different clothes, and offers a variety of options to customize the output. It also includes a pose validation feature to ensure the quality of the input images.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## Features
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+*   **Virtual Clothes Try-On:** The core feature of the application, allowing you to change the clothing on a person in an image.
+*   **Pose Validation:** Analyzes an image to ensure the person's pose is suitable for virtual try-on.
+*   **Multiple AI Backends:** Utilizes Google's Gemini model as the primary engine, with a fallback to Vertex AI.
+*   **Single and Bulk Processing:** Process images one by one, or in bulk by providing a list of person and clothing image URLs.
+*   **Flexible Image Input:** Provide images as base64 encoded strings or as URLs.
+*   **Customizable Environments:** Specify a background environment for the output image.
+*   **Creative Control:** Add more context to the generated image with parameters like activity, weather, camera, and style.
+*   **Simple REST API:** Easy to integrate with your own applications.
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+## Getting Started
 
-## Development
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+#### Single Mode (Base64 or URL)
 
+**Request Body:**
+
+| Parameter                  | Type   | Description                                          |
+| -------------------------- | ------ | ---------------------------------------------------- |
+| `human_image_base64`       | string | Base64 encoded string of the person's image.         |
+| `cloth_image_base64`       | string | Base64 encoded string of the clothing image.         |
+| `human_image_url`          | string | URL of the person's image.                           |
+| `cloth_image_url`          | string | URL of the clothing image.                           |
+| `environment_image_base64` | string | Base64 encoded string of the background image.       |
+| `activity`                 | string | The activity the person is doing.                    |
+| `weather`                  | string | The weather conditions.                              |
+| `camera`                   | string | The camera style.                                    |
+| `style`                    | string | The overall style of the image.                      |
+
+*Note: You must provide either the base64 encoded images or the image URLs.*
+
+**Success Response:**
+
+A JSON string containing the URL of the generated image.
+
+**Example Request:**
+
+```json
+{
+    "human_image_url": "https://example.com/person.jpg",
+    "cloth_image_url": "https://example.com/cloth.jpg",
+    "activity": "riding a bicycle",
+    "weather": "sunny, mid-summer",
+    "camera": "VHS. VHS artifacts, tracking lines, worn film texture, analog color bleeding, grainy quality",
+    "style": "Portrait photography"
+}
 ```
-npm i -g mint
+
+**Example Response:**
+
+```json
+"https://your-r2-bucket.your-account.r2.cloudflarestorage.com/path/to/your/image.jpg"
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+#### Bulk Mode
 
+**Request Body:**
+
+| Parameter             | Type         | Description                                    |
+| --------------------- | ------------ | ---------------------------------------------- |
+| `person_image_urls`   | list[string] | A list of URLs to the person images.           |
+| `clothing_image_urls` | list[string] | A list of URLs to the clothing images.         |
+| `...`                 | `...`        | Other optional parameters from single mode.    |
+
+**Success Response:**
+
+A JSON list of strings, where each string is a URL to a generated image.
+
+### Pose Validation
+
+*   **Endpoint:** `/api/v1/analyzers/validate-pose/`
+*   **Method:** `POST`
+*   **Content-Type:** `application/json`
+
+**Request Body:**
+
+| Parameter | Type   | Description                               |
+| --------- | ------ | ----------------------------------------- |
+| `picture` | string | Base64 encoded string of the image to validate. |
+
+**Success Response:**
+
+```json
+{
+    "correct": true
+}
 ```
-mint dev
+
+**Error Response:**
+
+```json
+{
+    "correct": false,
+    "message": "<error message>"
+}
 ```
-
-View your local preview at `http://localhost:3000`.
-
-## Publishing changes
-
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
-- [Mintlify community](https://mintlify.com/community)
