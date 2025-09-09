@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "AI Wardrobe API",
+    "description": "AI Wardrobe is a powerful and easy-to-use service that allows you to virtually try on different outfits on a person's image.",
     "license": {
       "name": "MIT"
     },
@@ -13,82 +13,95 @@
       "url": "http://sandbox.mintlify.com"
     }
   ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+    "/api/v1/changers/change-clothes/": {
+      "post": {
+        "description": "Allows you to change the clothes on a person in an image.",
+        "requestBody": {
+          "description": "Image and customization options",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "human_image_base64": {
+                    "type": "string",
+                    "description": "Base64 encoded string of the person's image."
+                  },
+                  "cloth_image_base64": {
+                    "type": "string",
+                    "description": "Base64 encoded string of the clothing image."
+                  },
+                  "human_image_url": {
+                    "type": "string",
+                    "description": "URL of the person's image."
+                  },
+                  "cloth_image_url": {
+                    "type": "string",
+                    "description": "URL of the clothing image."
+                  },
+                  "environment_image_base64": {
+                    "type": "string",
+                    "description": "Base64 encoded string of the background image."
+                  },
+                  "environment_image_url": {
+                    "type": "string",
+                    "description": "URL of the background image."
+                  },
+                  "activity": {
+                    "type": "string",
+                    "description": "The activity the person is doing."
+                  },
+                  "weather": {
+                    "type": "string",
+                    "description": "The weather conditions."
+                  },
+                  "camera": {
+                    "type": "string",
+                    "description": "The camera style."
+                  },
+                  "style": {
+                    "type": "string",
+                    "description": "The overall style of the image."
+                  },
+                  "person_image_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "A list of URLs to the person images."
+                  },
+                  "clothing_image_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "A list of URLs to the clothing images."
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
           }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "Generation successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "description": "URL of the generated image."
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of URLs to the generated images."
+                    }
+                  ]
                 }
               }
             }
@@ -96,121 +109,45 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
+    "/api/v1/analyzers/validate-pose/": {
       "post": {
-        "description": "Information about a new plant added to the store",
+        "description": "Validates the pose of a person in an image.",
         "requestBody": {
-          "description": "Plant added to the store",
+          "description": "Image to validate",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "type": "object",
+                "properties": {
+                  "picture": {
+                    "type": "string",
+                    "description": "Base64 encoded string of the image to validate."
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+            "description": "Pose validation result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "correct": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
         }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
       }
     }
   }

@@ -1,0 +1,98 @@
+---
+title: 'Clothing Changer'
+openapi: 'POST /api/v1/changers/change-clothes/'
+---
+
+This endpoint allows you to change the clothes on a person in an image.
+
+## Modes of Operation
+
+This endpoint supports two modes: "single" and "bulk".
+
+<Tabs>
+  <Tab title="Single Mode">
+    In this mode, you provide one human image and one cloth image, either as base64 encoded strings or as URLs.
+
+    ### Request Body (JSON):
+
+    You can either provide `human_image_base64` and `cloth_image_base64` or `human_image_url` and `cloth_image_url`. All other parameters are optional.
+
+    <RequestExample title="Example (using base64)">
+      ```json
+      {
+        "human_image_base64": "<base64_encoded_image>",
+        "cloth_image_base64": "<base64_encoded_image>",
+        "environment_image_base64": "<base64_encoded_image>",
+        "activity": "running",
+        "weather": "sunny",
+        "camera": "close-up",
+        "style": "photorealistic"
+      }
+      ```
+    </RequestExample>
+
+    <RequestExample title="Example (using URLs)">
+      ```json
+      {
+        "human_image_url": "https://example.com/human.jpg",
+        "cloth_image_url": "https://example.com/cloth.jpg",
+        "environment_image_url": "https://example.com/environment.jpg",
+        "activity": "dancing",
+        "weather": "rainy",
+        "camera": "full-shot",
+        "style": "cartoon"
+      }
+      ```
+    </RequestExample>
+
+    ### Response:
+
+    The response will be a URL to the generated image.
+
+    <ResponseExample>
+      ```
+      "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/..."
+      ```
+    </ResponseExample>
+  </Tab>
+  <Tab title="Bulk Mode">
+    In this mode, you provide a list of human image URLs and a list of clothing image URLs. The service will then generate images for all combinations of human and clothing images.
+
+    ### Request Body (JSON):
+
+    <RequestExample>
+      ```json
+      {
+        "person_image_urls": [
+          "https://example.com/human1.jpg",
+          "https://example.com/human2.jpg"
+        ],
+        "clothing_image_urls": [
+          "https://example.com/cloth1.jpg",
+          "https://example.com/cloth2.jpg"
+        ],
+        "environment_image_base64": "<base64_encoded_image>",
+        "activity": "swimming",
+        "weather": "cloudy",
+        "camera": "medium-shot",
+        "style": "impressionistic"
+      }
+      ```
+    </RequestExample>
+
+    ### Response:
+
+    The response will be a JSON array of URLs to the generated images.
+
+    <ResponseExample>
+      ```json
+      [
+        "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/...",
+        "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/...",
+        "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/...",
+        "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/..."
+      ]
+      ```
+    </ResponseExample>
+  </Tab>
+</Tabs>
