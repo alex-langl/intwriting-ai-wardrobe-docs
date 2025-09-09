@@ -3,9 +3,9 @@
   "name": "AI Wardrobe",
   "theme": "willow",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0476D9",
+    "light": "#9BC8F0",
+    "dark": "#1D1D1D"
   },
   "favicon": "/favicon.svg",
   "navigation": {
