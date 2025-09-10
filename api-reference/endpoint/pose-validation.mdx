@@ -11,38 +11,38 @@ This endpoint validates the pose of a person in an image to ensure it meets the 
   Base64 encoded string of the image to validate.
 </ParamField>
 
-<RequestExample>
-  ```json
+<CodeGroup>
+```json Request
   {
     "picture": "<base64_encoded_image>"
   }
-  ```
-</RequestExample>
+```
+</CodeGroup>
 
 ### Response (Success):
 
 If the pose is valid, the response will be:
 
-<ResponseExample>
-  ```json
+<CodeGroup>
+```json Response
   {
     "correct": true
   }
-  ```
-</ResponseExample>
+```
+</CodeGroup>
 
 ### Response (Failure):
 
 If the pose is not valid, the response will be:
 
-<ResponseExample>
-  ```json
+<CodeGroup>
+```json Response
   {
     "correct": false,
     "message": "<error_message>"
   }
-  ```
-</ResponseExample>
+```
+</CodeGroup>
 
 ### Possible Error Messages:
 

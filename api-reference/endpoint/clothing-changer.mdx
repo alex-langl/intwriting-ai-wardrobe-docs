@@ -17,8 +17,8 @@ This endpoint supports two modes: "single" and "bulk".
 
     You can either provide `human_image_base64` and `cloth_image_base64` or `human_image_url` and `cloth_image_url`. All other parameters are optional.
 
-    <RequestExample title="Example (using base64)">
-      ```json
+    <CodeGroup>
+      ```json Request
       {
         "human_image_base64": "<base64_encoded_image>",
         "cloth_image_base64": "<base64_encoded_image>",
@@ -29,10 +29,10 @@ This endpoint supports two modes: "single" and "bulk".
         "style": "photorealistic"
       }
       ```
-    </RequestExample>
+    </CodeGroup>
 
-    <RequestExample title="Example (using URLs)">
-      ```json
+    <CodeGroup>
+      ```json Request
       {
         "human_image_url": "https://example.com/human.jpg",
         "cloth_image_url": "https://example.com/cloth.jpg",
@@ -43,25 +43,25 @@ This endpoint supports two modes: "single" and "bulk".
         "style": "cartoon"
       }
       ```
-    </RequestExample>
+    </CodeGroup>
 
     ### Response:
 
     The response will be a URL to the generated image.
 
-    <ResponseExample>
-      ```
+    <CodeGroup>
+      ```json Response
       "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/..."
       ```
-    </ResponseExample>
+    </CodeGroup>
   </Tab>
   <Tab title="Bulk Mode">
     In this mode, you provide a list of human image URLs and a list of clothing image URLs. The service will then generate images for all combinations of human and clothing images.
 
     ### Request Body (JSON):
 
-    <RequestExample>
-      ```json
+    <CodeGroup>
+      ```json Request
       {
         "person_image_urls": [
           "https://example.com/human1.jpg",
@@ -78,14 +78,14 @@ This endpoint supports two modes: "single" and "bulk".
         "style": "impressionistic"
       }
       ```
-    </RequestExample>
+    </CodeGroup>
 
     ### Response:
 
     The response will be a JSON array of URLs to the generated images.
 
-    <ResponseExample>
-      ```json
+    <CodeGroup>
+      ```json Response
       [
         "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/...",
         "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/...",
@@ -93,6 +93,6 @@ This endpoint supports two modes: "single" and "bulk".
         "https://b471c38328e5f95c273b9b4a20013e27.r2.cloudflarestorage.com/..."
       ]
       ```
-    </ResponseExample>
+    </CodeGroup>
   </Tab>
 </Tabs>
