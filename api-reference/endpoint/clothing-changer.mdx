@@ -9,6 +9,10 @@ This endpoint allows you to change the clothes on a person in an image.
 
 This endpoint supports two modes: "single" and "bulk".
 
+<Warning>
+    The current implementation doesn't handle mixed content types (base64 and URL) for a single clothing swap request.
+</Warning>
+
 <Tabs>
   <Tab title="Single Mode">
     In this mode, you provide one human image and one cloth image, either as base64 encoded strings or as URLs.
