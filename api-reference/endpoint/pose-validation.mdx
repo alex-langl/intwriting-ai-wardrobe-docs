@@ -3,18 +3,30 @@ title: 'Pose Validation'
 openapi: 'POST /api/v1/analyzers/validate-pose/'
 ---
 
-This endpoint validates the pose of a person in an image to ensure it meets the requirements for the clothing change operation.
+This endpoint validates the pose of a person in an image to ensure it meets the requirements for the clothing change operation. It supports both base64 encoded images and image URLs.
 
 ### Request Body (JSON):
 
-<ParamField body="picture" type="string">
-  Base64 encoded string of the image to validate.
+Provide either `image_base64` or `image_url`, but not both.
+
+<ParamField body="image_base64" type="string">
+  Base64 encoded string of the image to validate. Can include data URI prefix (e.g., "data:image/jpeg;base64,...") which will be automatically stripped.
+</ParamField>
+
+<ParamField body="image_url" type="string">
+  URL of the image to validate. The image will be downloaded and processed.
 </ParamField>
 
 <CodeGroup>
-```json Request
+```json Request with Base64
   {
-    "picture": "<base64_encoded_image>"
+    "image_base64": "<base64_encoded_image>"
+  }
+```
+
+```json Request with URL
+  {
+    "image_url": "https://example.com/image.jpg"
   }
 ```
 </CodeGroup>
@@ -46,8 +58,10 @@ If the pose is not valid, the response will be:
 
 ### Possible Error Messages:
 
-*   "No picture provided."
+*   Serializer validation errors (e.g., missing required fields).
+*   "Failed to download image from URL: {e}"
 *   "Invalid image data: ..."
+*   "Image decoding failed."
 *   "Failed to load object detection model."
 *   "Failed to load pose landmarker model."
 *   "No person detected."
